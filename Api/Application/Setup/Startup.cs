@@ -48,6 +48,7 @@ public class Startup
             app.UseRouting();
             app.UseSwagger();
             app.UseSwaggerUI();
+            if(app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
             app.MapHealthChecks("/health", new HealthCheckOptions
             {
                 ResultStatusCodes =
