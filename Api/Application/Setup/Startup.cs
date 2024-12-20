@@ -36,6 +36,7 @@ public class Startup
         services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddControllers();
         services.AddHttpContextAccessor();
+        services.AddSwaggerGen();
     }
 
     public void ConfigureApp(WebApplication app)
@@ -45,6 +46,8 @@ public class Startup
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("es-Cl");
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseSwagger();
+            app.UseSwaggerUI();
             app.MapHealthChecks("/health", new HealthCheckOptions
             {
                 ResultStatusCodes =
