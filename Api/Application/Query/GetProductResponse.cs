@@ -1,7 +1,8 @@
 using System.Text.Json.Serialization;
 
+namespace Application.Query;
 public class GetProductResponse
 {
-    [JsonPropertyName("name")]
-    public string? Name { get; set; }
+    [JsonPropertyName("product")]
+    public required Product product { get; set; }
 }

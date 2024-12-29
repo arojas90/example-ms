@@ -1,22 +1,29 @@
-using System.Net;
+using Application.Query;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MyApp.Namespace
+namespace Application.Controller;
+
+[Route("api/products")]
+[ApiController]
+[Tags("Products")]
+public class ProductController : ControllerBase
 {
-    [Route("api/products")]
-    [ApiController]
-    [Tags("Products")]
-    public class ProductController : ControllerBase
+    private readonly IMediator _mediator;
+
+    public ProductController(IMediator mediator)
     {
-        private readonly IMediator _mediator;
-
-        public ProductController(IMediator mediator) {
-            _mediator = mediator;
-        }
-
-        [HttpGet("{id}")]
-        public Task<GetProductResponse> GetProductById([FromRoute] GetProductRequest request) => _mediator.Send(request);
+        _mediator = mediator;
     }
+
+    [HttpGet("{id}")]
+    public Task<GetProductResponse> GetProductById([FromRoute] int id)
+    {
+        var request = new GetProductRequest { Id = id };
+        return _mediator.Send(request);
+    }
+
+    [HttpGet]
+    public Task<GetProductsResponse> GetProducts() => _mediator.Send(new GetProductsRequest());
 }
+

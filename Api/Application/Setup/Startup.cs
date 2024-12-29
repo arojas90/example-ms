@@ -1,5 +1,3 @@
-
-
 using Microsoft.Extensions.Logging.Console;
 using System.Globalization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -21,6 +19,7 @@ public class Startup
         {
             options.IncludeScopes = true;
             options.TimestampFormat = "yyyy-MM-dd'T'HH:mm:ss";
+            options.SingleLine = true;
         });
         Configuration = webApplicationBuilder.Configuration;
         ConfigureServices(webApplicationBuilder.Services);
@@ -36,7 +35,9 @@ public class Startup
         services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddControllers();
         services.AddHttpContextAccessor();
-        services.AddSwaggerGen();
+        services.AddSwaggerGen(options => {
+            options.SupportNonNullableReferenceTypes();
+        });
     }
 
     public void ConfigureApp(WebApplication app)
@@ -48,7 +49,7 @@ public class Startup
             app.UseRouting();
             app.UseSwagger();
             app.UseSwaggerUI();
-            if(app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
+            if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
             app.MapHealthChecks("/health", new HealthCheckOptions
             {
                 ResultStatusCodes =
